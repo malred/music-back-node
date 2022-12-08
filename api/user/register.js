@@ -7,10 +7,9 @@ export default async function register(request, response) {
     if (uname === "" || upass === "") {
       response.send({
         status: 200,
-        msg: "注册失败",
+        msg: "账号密码不能为空",
       });
-      return;
-      return;
+      return; 
     }
     // id是唯一的
     const [rows] = await db
@@ -25,15 +24,12 @@ export default async function register(request, response) {
         }
       });
     // 如果id已存在
-    if (rows != null && rows != [] && rows != "") {
+    if (rows != null || rows != [] || rows != "") {
       response.send({
         status: 200,
         data: "账号已存在",
       });
     } else if (rows == "") {
-      // 非空判断
-      if (id == "" || uname == "" || upass == "") return;
-      if (null == id || null == uname || null == upass) return;
       // 插入muser表
       db.query(`insert into muser values ('${id}','${uname}','${upass}')`)
         .then(() => {
