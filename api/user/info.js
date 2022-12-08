@@ -1,7 +1,7 @@
 import db from "../db/db";
 // 获取uid(通过uname)
 export async function getMuserByUname(uname) {
-  const [rows] = await db.query(`select * from muser where uname='${uname}'`);
+  const [rows] = await db.query(`select id from muser where uname='${uname}'`);
   if (rows.length > 0) {
     return rows[0];
   } else {
