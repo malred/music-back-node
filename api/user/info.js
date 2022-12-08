@@ -12,7 +12,7 @@ export async function getMuserByUname(uname) {
 export default async function getInfo(req, res) {
   if (null !== req && undefined !== res) {
     const { uname } = req.query;
-    let id = getMuserByUname(uname);
+    let id = await getMuserByUname(uname);
     if (id === "") {
       return res.send({
         status: 200,
