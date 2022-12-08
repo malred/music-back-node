@@ -9,12 +9,13 @@ export default async function login(request, response) {
     );
     if (rows.length !== 0) {
       // response.status(200).send({
-      response.send({
-        status: 200, 
+      return response.send({
+        status: 200,
         data: "登录成功",
       });
     } else {
-      response.status(500).send({
+      return response.send({
+        status: 200,
         msg: "登录失败", //状态描述
       });
     }
