@@ -34,7 +34,7 @@ export default async function getInfo(req, res) {
           } else {
             return res.send({
               status: 200,
-              msg: "查询结果为空",
+              msg: rows,
             });
           }
         });
