@@ -2,7 +2,7 @@ import db from "../db/db";
 // 获取账号密码(根据uname)
 export default async function getMuserByUname(req, res) {
   if (null !== req && undefined !== res) {
-    const { uname } = request.query;
+    const { uname } = req.query;
     const [rows] = await db.query(`select * from muser where uname='${uname}'`);
     if (rows.length > 0) {
       return res.send({
