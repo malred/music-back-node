@@ -67,11 +67,13 @@ export default async function addFriend(req, res) {
     try {
         //通过fname获取id
         var fid = await getMuserIdByUname(fname)
-        if (fid.length < 0 || fid === undefined || fid === '' || fid === null)
-            return res.send({
+        if (fid[0] === undefined) {
+            res.send({
                 status: 500,
                 msg: "查无此人",
             });
+            return res.end()
+        }
         // 如果已存在该好友,但是分组不同,就改分组
         let ogroup = await getByUidAndFid(uid, fid, res)
         // ogroup[0] !== undefined ?
@@ -81,13 +83,14 @@ export default async function addFriend(req, res) {
                 if (ogroup[0][i][0] !== fgroup) {
                     // 改分组
                     await updataGroupByUidAndFid(uid, fid, fgroup, res)
-                    return res.send({
+                    res.send({
                         status: 200,
                         data: "修改分组成功",
                     });
+                    return res.end()
                 }
             }
-        } 
+        }
         // if (ogroup !== fgroup &&
         //     // 一条都没有的时候返回为null也会满足前面的判断 
         //     '' !== ogroup
@@ -101,10 +104,11 @@ export default async function addFriend(req, res) {
         // } else {
         //如果已存在,分组也相同
         if (await getByUidAndFidAndGroup(uid, fid, fgroup, res).length > 0) {
-            return res.send({
+            res.send({
                 status: 500,
                 msg: `你已添加过该好友`,
             });
+            return res.end()
         }
         // 正向好友 -> 添加者 to 被添加者
         await db.query(
@@ -124,21 +128,23 @@ export default async function addFriend(req, res) {
             `insert into friends (uid, fid, ${column} )
                      values ('${fid}', '${uid}', '默认')`
         );
-        return res.send({
+        res.send({
             status: 200,
             data: "添加好友成功",
         });
+        return res.end()
     }
     // }
     catch {
-        return res.send({
+        res.send({
             status: 500,
             msg: `添加好友失败`, // ${uid},${fid},${fgroup}
             // 调试返回group by uid,fid 时使用:
             // msg: [0:[], 1:[...]] 下标1的数据是默认返回的,就算下标0的数据为空 
             // msg: group,
             // msg: group !== fgroup && '' !== group 
-            // msg: group[0]
+            // msg: group[0] 
         });
+        return res.end()
     }
 }

@@ -1,4 +1,5 @@
 var mysql = require("mysql2");
+// 获取数据库连接池
 var pool = mysql.createPool({
   // host: "containers-us-west-109.railway.app",
   host: "localhost",
