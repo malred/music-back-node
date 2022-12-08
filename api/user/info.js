@@ -3,7 +3,8 @@ import db from "../db/db";
 export async function getMuserByUname(uname) {
   const [rows] = await db.query(
     `select id from music.muser where uname='${uname}'`
-    ); 
+  );
+  console.log(rows);
   if (rows.length > 0) {
     return rows[0];
   } else {
@@ -14,7 +15,7 @@ export async function getMuserByUname(uname) {
 export default async function getInfo(req, res) {
   if (null !== req && undefined !== res) {
     const { uname } = req.query;
-    let id =await getMuserByUname(uname);
+    let id = await getMuserByUname(uname);
     if (id === "") {
       return res.send({
         status: 200,
@@ -22,23 +23,21 @@ export default async function getInfo(req, res) {
       });
     } else {
       // 获取用户信息
-      const [rows] = await db.query(
-        `select * from music.muser_info where id='${id}'`
-      );
-      if (rows.length > 0) {
-        return res.send({
-          status: 200,
-          data: rows[0],
+      const [rows] = await db
+        .query(`select * from music.muser_info where id='${id}'`)
+        .then((rows) => {
+          if (rows.length > 0) {
+            return res.send({
+              status: 200,
+              data: rows[0],
+            });
+          } else {
+            return res.send({
+              status: 200,
+              msg: "查询结果为空",
+            });
+          }
         });
-      } else {
-        return res.send({
-          status: 200,
-          msg: {
-            id: id,
-            info: rows
-          },
-        });
-      }
     }
   }
 }
