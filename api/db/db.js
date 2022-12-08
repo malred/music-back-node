@@ -4,6 +4,6 @@ var pool = mysql.createPool({
   port: 6390,
   database: "music",
   user: "root",
-  password: "nFNWD8a7KSaLLbDaN2uO",
+  password: "nFNWD8a7KSaLLbDaN2uO",rowsAsArray: true
 });
 export default pool.promise()
