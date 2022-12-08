@@ -29,7 +29,7 @@ export default async function getInfo(req, res) {
           if (rows.length > 0) {
             return res.send({
               status: 200,
-              data: rows,
+              data: JSON.parse(rows), 
             });
           } else {
             return res.send({
