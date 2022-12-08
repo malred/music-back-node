@@ -1,4 +1,5 @@
 import db from "../db/db";
+import { get } from "../utils/objects";
 // 获取uid(通过uname)
 export async function getMuserByUname(uname) {
   const [rows] = await db.query(
@@ -26,15 +27,17 @@ export default async function getInfo(req, res) {
       await db
         .query(`select * from music.muser_info where id='${id}'`)
         .then((rows) => {
+          // 返回数组[[[x,x,x,x,x]],[],...],row[0][0][x]是单个的数据
+          let data = get(rows);
           let userinfo = {
-            id: rows[0][0][0],
-            name: rows[0][0][1],
-            age: rows[0][0][2],
-            birth: rows[0][0][3],
-            createday: rows[0][0][4],
-            location: rows[0][0][5],
-            img: rows[0][0][6],
-            sex: rows[0][0][7],
+            id: data[0],
+            name: data[1],
+            age: data[2],
+            birth: data[3],
+            createday: data[4],
+            location: data[5],
+            img: data[6],
+            sex: data[7],
           };
           if (rows.length > 0) {
             return res.send({
