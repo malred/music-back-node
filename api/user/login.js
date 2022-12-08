@@ -10,12 +10,11 @@ export default async function login(request, response) {
     if (rows.length === 0) {
       // response.status(200).send({
       response.send({
-        status: 200,
-        // msg: "登录成功", //状态描述
+        status: 200, 
         data: "登录成功",
       });
-    } else if (rows == "") {
-      response.status(200).send({
+    } else {
+      response.status(500).send({
         msg: "登录失败", //状态描述
       });
     }
