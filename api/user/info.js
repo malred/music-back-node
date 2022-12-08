@@ -4,6 +4,7 @@ export async function getMuserByUname(uname) {
   const [rows] = await db.query(
     `select id from music.muser where uname='${uname}'`
     );
+      console.log(rows);
   if (rows.length > 0) {
     return rows[0];
   } else {
