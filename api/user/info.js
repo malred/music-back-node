@@ -1,7 +1,9 @@
 import db from "../db/db";
 // 获取uid(通过uname)
 export async function getMuserByUname(uname) {
-  const [rows] = await db.query(`select id from muser where uname='${uname}'`);
+  const [rows] = await db.query(
+    `select id from music.muser where uname='${uname}'`
+    );
   if (rows.length > 0) {
     return rows[0];
   } else {
@@ -12,7 +14,7 @@ export async function getMuserByUname(uname) {
 export default async function getInfo(req, res) {
   if (null !== req && undefined !== res) {
     const { uname } = req.query;
-    let id = await getMuserByUname(uname);
+    let id =await getMuserByUname(uname);
     if (id === "") {
       return res.send({
         status: 200,
