@@ -37,14 +37,7 @@ export default async function register(request, response) {
           )
             .then(
               // 执行完所有操作后 进行提交
-              db.commit((err3) => {
-                if (err3) {
-                  response.send({
-                    status: 200,
-                    msg: "注册失败",
-                  });
-                  return;
-                }
+              db.commit(() => {
                 // 都成功,并提交完成后
                 response.send({
                   status: 200,
