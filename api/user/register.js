@@ -24,7 +24,7 @@ export default async function register(request, response) {
         }
       });
     // 如果id已存在
-    if (rows !== "") {
+    if (rows !== [] ) {
       response.send({
         status: 200,
         msg: "账号已存在",
