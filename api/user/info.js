@@ -27,14 +27,14 @@ export default async function getInfo(req, res) {
         .query(`select * from music.muser_info where id='${id}'`)
         .then((rows) => {
           let userinfo = {
-            id: rows[0][0],
-            name: rows[0][1],
-            age: rows[0][2],
-            birth: rows[0][3],
-            createday: rows[0][4],
-            location: rows[0][5],
-            img: rows[0][6],
-            sex: rows[0][7],
+            id: rows[0][0][0],
+            name: rows[0][0][1],
+            age: rows[0][0][2],
+            birth: rows[0][0][3],
+            createday: rows[0][0][4],
+            location: rows[0][0][5],
+            img: rows[0][0][6],
+            sex: rows[0][0][7],
           };
           if (rows.length > 0) {
             return res.send({
