@@ -23,7 +23,7 @@ export default async function getInfo(req, res) {
     } else {
       // 获取用户信息
       const [rows] = await db.query(
-        `select * from muser_info where id='${id}'`
+        `select * from music.muser_info where id='${id}'`
       );
       if (rows.length > 0) {
         return res.send({
