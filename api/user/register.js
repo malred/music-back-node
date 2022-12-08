@@ -9,7 +9,7 @@ export default async function register(request, response) {
         status: 200,
         msg: "账号密码不能为空",
       });
-      return; 
+      return;
     }
     // id是唯一的
     const [rows] = await db
@@ -24,12 +24,12 @@ export default async function register(request, response) {
         }
       });
     // 如果id已存在
-    if (rows != null || rows != [] || rows != "") {
+    if (rows !== "") {
       response.send({
         status: 200,
-        data: "账号已存在",
+        msg: "账号已存在",
       });
-    } else if (rows == "") {
+    } else {
       // 插入muser表
       db.query(`insert into muser values ('${id}','${uname}','${upass}')`)
         .then(() => {
