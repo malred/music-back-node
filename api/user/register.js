@@ -4,13 +4,19 @@ export default async function register(request, response) {
   if (null !== request && undefined !== request) {
     // 从路由中获取参数(uname,upass)
     const { id, uname, upass } = request.query;
-    if (uname === "" || upass === "") return;
+    if (uname === "" || upass === "") {
+      response.send({
+        status: 200,
+        msg: "注册失败",
+      });
+      return;
+      return;
+    }
     // id是唯一的
     const [rows] = await db
       .query(`select * from muser where id='${id}'`)
       .catch((err) => {
         if (err) {
-          // 回滚后 会执行该回调函数（此处可处理一些后续的额外操作）
           response.send({
             status: 200,
             msg: "注册失败",
