@@ -6,8 +6,8 @@ export default async function login(request, response) {
     const { uname, upass } = request.query;
     const [rows] = await db.query(
       `select * from muser where uname='${uname}' and upass='${upass}'`
-    ); 
-    if (rows != null && rows != [] && rows != "") {
+    );
+    if (rows.length === 0) {
       // response.status(200).send({
       response.send({
         status: 200,
