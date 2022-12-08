@@ -9,14 +9,12 @@ export default async function register(request, response) {
       .query(`select * from muser where id='${id}'`)
       .catch((err) => {
         if (err) {
-          // 使用return是防止代码往下运行
-          return db.rollback((_) => {
-            // 回滚后 会执行该回调函数（此处可处理一些后续的额外操作）
-            response.send({
-              status: 200,
-              data: "注册失败",
-            });
+          // 回滚后 会执行该回调函数（此处可处理一些后续的额外操作）
+          response.send({
+            status: 200,
+            data: "注册失败",
           });
+          return;
         }
       });
     // 如果id已存在
@@ -33,21 +31,19 @@ export default async function register(request, response) {
       db.query(`insert into muser values ('${id}','${uname}','${upass}')`)
         .then(() => {
           // 插入muser_info表
-          db
-            .query(
-              `insert into muser_info(id, createday) 
+          db.query(
+            `insert into muser_info(id, createday) 
             values ('${id}', DATE_FORMAT(now(), '%Y-%m-%d'))`
-            )
+          )
             .then(
               // 执行完所有操作后 进行提交
               db.commit((err3) => {
                 if (err3) {
-                  return db.rollback((_) => {
-                    response.send({
-                      status: 200,
-                      data: "注册失败",
-                    });
+                  response.send({
+                    status: 200,
+                    data: "注册失败",
                   });
+                  return;
                 }
                 // 都成功,并提交完成后
                 response.send({
@@ -57,23 +53,21 @@ export default async function register(request, response) {
               })
             )
             .catch((err) => {
-              return db.rollback((_) => {
-                response.send({
-                  status: 200,
-                  data: "注册失败",
-                });
+              response.send({
+                status: 200,
+                data: "注册失败",
               });
+              return;
             });
         })
         .catch((err) => {
           // 使用return是防止代码往下运行
-          return db.rollback((_) => {
-            // 回滚后 会执行该回调函数（此处可处理一些后续的额外操作）
-            response.send({
-              status: 200,
-              data: "注册失败",
-            });
+          // 回滚后 会执行该回调函数（此处可处理一些后续的额外操作）
+          response.send({
+            status: 200,
+            data: "注册失败",
           });
+          return;
         });
     }
   }
