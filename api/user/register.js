@@ -4,6 +4,7 @@ export default async function register(request, response) {
   if (null !== request && undefined !== request) {
     // 从路由中获取参数(uname,upass)
     const { id, uname, upass } = request.query;
+    if (uname === "" || upass === "") return;
     // id是唯一的
     const [rows] = await db
       .query(`select * from muser where id='${id}'`)
