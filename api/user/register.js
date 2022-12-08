@@ -47,12 +47,10 @@ export default async function register(request, response) {
           )
             .then(
               // 执行完所有操作后 进行提交
-              db.commit(() => {
-                // 都成功,并提交完成后
-                response.send({
-                  status: 200,
-                  data: "注册成功",
-                });
+              // 都成功,并提交完成后
+              response.send({
+                status: 200,
+                data: "注册成功",
               })
             )
             .catch((err) => {
