@@ -12,7 +12,7 @@ export default async function register(request, response) {
           // 回滚后 会执行该回调函数（此处可处理一些后续的额外操作）
           response.send({
             status: 200,
-            data: "注册失败",
+            msg: "注册失败",
           });
           return;
         }
@@ -41,7 +41,7 @@ export default async function register(request, response) {
                 if (err3) {
                   response.send({
                     status: 200,
-                    data: "注册失败",
+                    msg: "注册失败",
                   });
                   return;
                 }
@@ -55,7 +55,7 @@ export default async function register(request, response) {
             .catch((err) => {
               response.send({
                 status: 200,
-                data: "注册失败",
+                msg: "注册失败",
               });
               return;
             });
@@ -65,7 +65,7 @@ export default async function register(request, response) {
           // 回滚后 会执行该回调函数（此处可处理一些后续的额外操作）
           response.send({
             status: 200,
-            data: "注册失败",
+            msg: "注册失败",
           });
           return;
         });
