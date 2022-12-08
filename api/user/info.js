@@ -3,8 +3,7 @@ import db from "../db/db";
 export async function getMuserByUname(uname) {
   const [rows] = await db.query(
     `select id from music.muser where uname='${uname}'`
-    );
-      console.log(rows);
+    ); 
   if (rows.length > 0) {
     return rows[0];
   } else {
@@ -19,7 +18,7 @@ export default async function getInfo(req, res) {
     if (id === "") {
       return res.send({
         status: 200,
-        msg: "查询结果为空",
+        msg: id,
       });
     } else {
       // 获取用户信息
