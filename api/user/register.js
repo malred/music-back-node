@@ -24,7 +24,7 @@ export default async function register(request, response) {
         }
       });
     // 如果id已存在
-    if (rows.length!==0 ) {
+    if (rows.length !== 0) {
       response.send({
         status: 200,
         msg: "账号已存在",
@@ -32,6 +32,13 @@ export default async function register(request, response) {
     } else {
       // 插入muser表
       db.query(`insert into muser values ('${id}','${uname}','${upass}')`)
+        .catch(() => {
+          response.send({
+            status: 200,
+            msg: "注册失败",
+          });
+          return;
+        })
         .then(() => {
           // 插入muser_info表
           db.query(
@@ -55,15 +62,6 @@ export default async function register(request, response) {
               });
               return;
             });
-        })
-        .catch((err) => {
-          // 使用return是防止代码往下运行
-          // 回滚后 会执行该回调函数（此处可处理一些后续的额外操作）
-          response.send({
-            status: 200,
-            msg: "注册失败",
-          });
-          return;
         });
     }
   }
