@@ -25,7 +25,7 @@ export default async function getInfo(req, res) {
       // 获取用户信息
       await db
         .query(`select * from music.muser_info where id='${id}'`)
-        .then(([rows]) => {
+        .then((rows) => {
           if (rows.length > 0) {
             return res.send({
               status: 200,
