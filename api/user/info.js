@@ -19,22 +19,32 @@ export default async function getInfo(req, res) {
     if (id === "") {
       return res.send({
         status: 200,
-        msg: id,
+        msg: "该账号不存在",
       });
     } else {
       // 获取用户信息
       await db
         .query(`select * from music.muser_info where id='${id}'`)
         .then((rows) => {
+          let userinfo = {
+            id: rows[0][0],
+            name: rows[0][1],
+            age: rows[0][2],
+            birth: rows[0][3],
+            createday: rows[0][4],
+            location: rows[0][5],
+            img: rows[0][6],
+            sex: rows[0][7],
+          };
           if (rows.length > 0) {
             return res.send({
               status: 200,
-              data: rows[0][0], 
+              data: userinfo,
             });
           } else {
             return res.send({
               status: 200,
-              msg: rows,
+              msg: "查询结果为空",
             });
           }
         });
