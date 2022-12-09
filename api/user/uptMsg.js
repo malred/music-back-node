@@ -5,7 +5,7 @@ export default async function uptMsg(req, res) {
     const { id, name, age, sex, birth, location } = req.query;
     await db
       .query(
-        ` update muser_info
+        ` update music.muser_info
           set   name= ${name},
                 age = ${age},
                 sex=${sex},
