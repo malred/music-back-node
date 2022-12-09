@@ -5,7 +5,7 @@ import { getMuserIdByUname } from "../user/info";
 // 所有用变量来规避关键字
 var column = '`group`'
 // 根据uid和fid查询分组信息
-export function getByUidAndFid(uid, fid) {
+export async function getByUidAndFid(uid, fid, res) {
     try {
         // 查询旧分组
         var oldGroup = db.query(
@@ -23,7 +23,7 @@ export function getByUidAndFid(uid, fid) {
     }
 }
 // 根据uid和fid改分组
-export function updataGroupByUidAndFid(uid, fid, fgroup) {
+export async function updataGroupByUidAndFid(uid, fid, fgroup, res) {
     try {
         // 更新分组 
         db.query(
@@ -40,16 +40,15 @@ export function updataGroupByUidAndFid(uid, fid, fgroup) {
     }
 }
 // 用于新添加的好友是否已存在(分组也没变)
-export function getByUidAndFidAndGroup(uid, fid, fgroup) {
+export async function getByUidAndFidAndGroup(uid, fid, fgroup, res) {
     try {
-        var [rows] = db.query(
+        return db.query(
             `select *
-            from friends
-            where uid = ${uid}
-              and fid = ${fid}
-              and ${column} = ${fgroup}`
+            from music.friends
+            where uid = '${uid}'
+              and fid = '${fid}'
+              and ${column} = '${fgroup}'`
         )
-        return rows
     } catch {
         return res.send({
             status: 500,
@@ -75,21 +74,22 @@ export default async function addFriend(req, res) {
                 msg: "查无此人",
             });
         // 如果已存在该好友,但是分组不同,就改分组
-        if (getByUidAndFid(uid, fid) !== fgroup &&
+        let ogroup = await getByUidAndFid(uid, fid, res)
+        if (ogroup !== fgroup &&
             // 一条都没有的时候返回为null也会满足前面的判断
-            null !== getByUidAndFid(uid, fid) &&
-            undefined !== getByUidAndFid(uid, fid) &&
-            0 < getByUidAndFid(uid, fid).length
+            null !== ogroup &&
+            undefined !== ogroup &&
+            0 < ogroup.length
         ) {
             // 改分组
-            updataGroupByUidAndFid(uid, fid, fgroup)
+            await updataGroupByUidAndFid(uid, fid, fgroup, res)
             return res.send({
                 status: 200,
                 data: "修改分组成功",
             });
         }
         //如果已存在,分组也相同
-        if (getByUidAndFidAndGroup(uid, fid, fgroup).length > 0) {
+        if (await getByUidAndFidAndGroup(uid, fid, fgroup, res).length > 0) {
             return res.send({
                 status: 500,
                 msg: `你已添加过该好友`,
@@ -102,14 +102,15 @@ export default async function addFriend(req, res) {
         );
         // 反向好友 -> 被添加者 to 添加者
         // 如果对方已经有好友,并且分组不是默认分组,就改分组
-        if (getByUidAndFid(fid, uid) !== '默认' &&
+        let group = await getByUidAndFid(fid, uid, res)
+        if (group !== '默认' &&
             // 一条都没有的时候返回为null也会满足前面的判断
-            null !== getByUidAndFid(fid, uid) &&
-            undefined !== getByUidAndFid(fid, uid) &&
-            0 < getByUidAndFid(fid, uid).length
+            null !== group &&
+            undefined !== group &&
+            0 < group.length
         ) {
             // 改分组
-            updataGroupByUidAndFid(fid, uid, fgroup)
+            await updataGroupByUidAndFid(fid, uid, fgroup, res)
             return res.send({
                 status: 200,
                 data: "修改分组成功",
