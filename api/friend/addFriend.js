@@ -30,12 +30,30 @@ export function updataGroupByUidAndFid(uid, fid, fgroup) {
             `update music.friends
             set ${column} = '${fgroup}'
             where uid = '${uid}'
-              and fid = '${fid}';`
+              and fid = '${fid}'`
         )
     } catch {
         return res.send({
             status: 500,
             msg: `更新分组失败`,
+        });
+    }
+}
+// 用于新添加的好友是否已存在(分组也没变)
+export function getByUidAndFidAndGroup(uid, fid, fgroup) {
+    try {
+        var [rows] = db.query(
+            `select *
+            from friends
+            where uid = ${uid}
+              and fid = ${fid}
+              and ${column} = ${fgroup}`
+        )
+        return rows
+    } catch {
+        return res.send({
+            status: 500,
+            msg: `查询好友信息失败`,
         });
     }
 }
@@ -70,9 +88,36 @@ export default async function addFriend(req, res) {
                 data: "修改分组成功",
             });
         }
+        //如果已存在,分组也相同
+        if (getByUidAndFidAndGroup(uid, fid, fgroup).length > 0) {
+            return res.send({
+                status: 500,
+                msg: `你已添加过该好友`,
+            });;
+        }
+        // 正向好友 -> 添加者 to 被添加者
         await db.query(
             `insert into friends (uid, fid, ${column} )
              values ('${uid}', '${fid}', '${fgroup}')`
+        );
+        // 反向好友 -> 被添加者 to 添加者
+        // 如果对方已经有好友,并且分组不是默认分组,就改分组
+        if (getByUidAndFid(fid, uid) !== '默认' &&
+            // 一条都没有的时候返回为null也会满足前面的判断
+            null !== getByUidAndFid(fid, uid) &&
+            undefined !== getByUidAndFid(fid, uid) &&
+            0 < getByUidAndFid(fid, uid).length
+        ) {
+            // 改分组
+            updataGroupByUidAndFid(fid, uid, fgroup)
+            return res.send({
+                status: 200,
+                data: "修改分组成功",
+            });
+        }
+        await db.query(
+            `insert into friends (uid, fid, ${column} )
+             values ('${fid}', '${uid}', '默认')`
         );
         return res.send({
             status: 200,
