@@ -1,7 +1,7 @@
 import db from "../db/db"; 
 // 修改密码
 export default async function uptMsg(req, res) {
-  if (null !== req && undefined !== res) {
+  if (null !== req && undefined !== req) {
     const { id, name, age, sex, birth, location } = req.body;
     await db
       .query(
