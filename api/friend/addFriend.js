@@ -3,7 +3,7 @@ import { getMuserIdByUname } from "../user/info";
 // 如果直接在语句用group会报错(因为是关键词)
 // 但是在``里又不能加``来区别关键字
 // 所有用变量来规避关键字
-var column = '`group`'
+export var column = '`group`'
 // 根据uid和fid查询分组信息
 export async function getByUidAndFid(uid, fid, res) {
     try {
