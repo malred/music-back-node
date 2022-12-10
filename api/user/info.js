@@ -1,4 +1,4 @@
-import db from "../db/db";
+import db from "../../db/db";
 /**
  * 获取uid(通过uname)
  */
