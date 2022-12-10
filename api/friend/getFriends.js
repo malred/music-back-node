@@ -1,4 +1,4 @@
-import db from "../db/db";
+import db from "../../db/db";
 import { toUserInfo } from "../user/info";
 import { column } from "./addFriend";
 // 根据uid查询分组信息
