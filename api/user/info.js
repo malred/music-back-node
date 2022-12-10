@@ -1,19 +1,16 @@
-import db from "../db/db";
-/**
- * 获取uid(通过uname)
- */
-export async function getMuserIdByUname(uname) {
-  const [rows] = await db.query(
-    `select id from music.muser where uname='${uname}'`
-  );
-  console.log(rows);
-  if (rows.length > 0) {
-    return rows[0];
-  } else {
-    return "";
+import db from "../../utils/db";
+import R from '../../utils/res'
+/** 获取uid(通过uname) */
+export async function getMuserIdByUname(uname, res) {
+  try {
+    return db.query(
+      `select id from music.muser where uname='${uname}'`
+    );
+  } catch {
+    return R.ERR('查询失败', res)
   }
 }
-// 传入mysql2返回的数组,封装为userinfo对象
+/** 传入mysql2返回的数组,封装为userinfo对象 */
 export async function toUserInfo(rows) {
   return {
     id: rows[0][0][0],
@@ -26,41 +23,34 @@ export async function toUserInfo(rows) {
     sex: rows[0][0][7],
   };
 }
-// 获取用户信息(根据uname)
+/** 获取用户信息(根据uid) */
+export async function getInfoByUname(uid, res) {
+  try {
+    return db.query(`select * from music.muser_info where id='${uid}'`)
+  } catch {
+    return R.ERR('查询失败', res)
+  }
+}
+/** 获取用户信息 */
 export default async function getInfo(req, res) {
-  if (null !== req && undefined !== req) {
-    const { uname } = req.query;
-    try {
-      let id = await getMuserIdByUname(uname);
-      if (id === "") {
-        return res.send({
-          status: 200,
-          msg: "该账号不存在",
-        });
-      } else {
-        // 获取用户信息
-        let rows = await db
-          .query(`select * from music.muser_info where id='${id}'`)
-        // 返回数组[[[x,x,x,x,x]],[],...],row[0][0][x]是单个的数据
-        if (rows[0] != undefined) {
-          let userinfo = await toUserInfo(rows)
-          return res.send({
-            status: 200,
-            data: userinfo,
-          });
-        }
-        else {
-          return res.send({
-            status: 500,
-            msg: "查询结果为空",
-          });
-        }
-      }
-    } catch {
-      return res.send({
-        status: 500,
-        msg: "获取用户信息失败",
-      });
+  if (!req || !req.query) {
+    return R.ERR('请求参数错误', res)
+  }
+  const { uname } = req.query;
+  try {
+    let id = await getMuserIdByUname(uname, res);
+    if (id[0].length < 0 || id[0] === undefined) {
+      return R.ERR('该账号不存在', res)
     }
+    // 获取用户信息
+    let rows = await getInfoByUname(id[0][0][0], res)
+    // 返回数组[[[x,x,x,x,x]],[],...],row[0][0][x]是单个的数据
+    if (rows[0] != undefined && rows[0].length > 0) {
+      let userinfo = await toUserInfo(rows)
+      return R.OK(userinfo, res)
+    }
+    return R.ERR('查询结果为空', res)
+  } catch {
+    return R.ERR('获取用户信息失败', res)
   }
 }

@@ -1,13 +1,14 @@
-import db from "../db/db";
-import { toUserInfo } from "../user/info";
-import { column } from "./addFriend";
+import db from "../../db/db";
+import {toUserInfo} from "../user/info";
+import {column} from "./addFriend";
+
 // 根据uid查询分组信息
 export async function getGroupsByUid(uid, res) {
     try {
         return db.query(
             `select ${column}
-            from music.friends
-            where uid = '${uid}'`
+             from music.friends
+             where uid = '${uid}'`
         )
     } catch {
         return res.send({
@@ -16,14 +17,15 @@ export async function getGroupsByUid(uid, res) {
         });
     }
 }
+
 // 查询某人的某个分组的好友id
 export async function getFidByGroupAndUid(group, uid, res) {
     try {
         return db.query(
             `select fid
-            from music.friends
-            where ${column} = '${group}'
-              and uid = '${uid}'`
+             from music.friends
+             where ${column} = '${group}'
+               and uid = '${uid}'`
         )
     } catch {
         return res.send({
@@ -32,13 +34,14 @@ export async function getFidByGroupAndUid(group, uid, res) {
         });
     }
 }
+
 // 根据id获取信息
 export async function getUserInfoById(fid, res) {
     try {
         return db.query(
             `select *
-            from music.muser_info
-            where id = '${fid}';`
+             from music.muser_info
+             where id = '${fid}';`
         )
     } catch {
         return res.send({
@@ -47,6 +50,7 @@ export async function getUserInfoById(fid, res) {
         });
     }
 }
+
 // 获取好友列表
 export default async function getFriendsByUid(req, res) {
     if (!req || !req.query) {
@@ -55,7 +59,7 @@ export default async function getFriendsByUid(req, res) {
             msg: "请求参数错误",
         });
     }
-    const { uid } = req.query;
+    const {uid} = req.query;
     try {
         // 用于返回的对象(Map<String, List<MuserInfo>>)
         let map = {}
@@ -81,6 +85,7 @@ export default async function getFriendsByUid(req, res) {
                 }
                 //最后组别为key,朋友list为value,放入map
                 map[groups[0][i][0]] = muserInfos;
+                muserInfos = []// 清空
             }
         }
         return res.send({

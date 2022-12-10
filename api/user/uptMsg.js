@@ -1,13 +1,10 @@
-import db from "../db/db"; 
-// 修改信息
+import db from "../../db/db";
+/** 修改信息 */
 export default async function uptMsg(req, res) {
   if (!req || !req.body) {
-    return res.send({
-      status: 400,
-      msg: "请求参数错误",
-    });
+    return R.ERR('请求参数错误', res)
   }
-  const { id, name, age, sex, birth, location } = req.body; 
+  const { id, name, age, sex, birth, location } = req.body;
   try {
     await db.query(
       `update music.muser_info

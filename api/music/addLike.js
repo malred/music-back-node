@@ -1,4 +1,4 @@
-import db from "../db/db"
+import db from "../../db/db"
 // 根据id获取喜欢的歌曲
 export async function getUserLikeById(id, res) {
     try {

@@ -1,23 +1,31 @@
-import db from "../db/db";
-// 登录
-export default async function login(request, response) {
-  if (null !== request && undefined !== request) {
-    // 从路由中获取参数(uname,upass)
-    const { uname, upass } = request.query;
-    const [rows] = await db.query(
-      `select * from muser where uname='${uname}' and upass='${upass}'`
-    );
-    if (rows.length !== 0) {
-      // response.status(200).send({
-      return response.send({
-        status: 200,
-        data: "登录成功",
-      });
-    } else {
-      return response.send({
-        status: 200,
-        msg: "登录失败", //状态描述
-      });
+import db from "../../utils/db";
+import R from '../../utils/res'
+/** 数据库查询,登录 */
+export default function getUserByUnameAndUpass(uname, upass, res) {
+    try {
+        return db.query(`select *
+             from music.muser
+             where uname = '${uname}'
+               and upass = '${upass}'`)
+    } catch {
+        return R.ERR('查询错误', res)
     }
-  }
+}
+/** 登录 */
+export default async function login(req, res) {
+    if (!req || !req.body) {
+        return R.ERR('请求参数错误', res)
+    }
+    // 从路由中获取参数(uname,upass)
+    const { uname, upass } = req.body;
+    try {
+        const rows = await getUserByUnameAndUpass(uname, upass, res)
+        // console.log(rows);
+        if (rows[0].length !== 0 && rows[0] !== undefined) {
+            return R.OK('登录成功', res)
+        }
+        return R.ERR('账号或密码错误',res)
+    } catch {
+        return R.ERR('登录失败',res)
+    }
 }
