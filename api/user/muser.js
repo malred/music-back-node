@@ -1,4 +1,4 @@
-import db from "../db/db";
+import db from "../../db/db";
 // 获取账号密码(根据uname)
 export default async function getMuserByUname(req, res) {
   if (null !== req && undefined !== req) {
