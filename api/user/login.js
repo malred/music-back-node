@@ -1,4 +1,4 @@
-import db from "../db/db";
+import db from "../../db/db";
 // 登录
 export default async function login(request, response) {
   if (null !== request && undefined !== request) {
