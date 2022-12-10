@@ -1,4 +1,4 @@
-import db from "../db/db";
+import db from "../../db/db";
 // 注册
 export default async function register(request, response) {
   if (null !== request && undefined !== request) {
