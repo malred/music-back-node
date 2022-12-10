@@ -1,4 +1,4 @@
-import db from "../db/db"; 
+import db from "../../db/db"; 
 // 修改信息
 export default async function uptMsg(req, res) {
   if (!req || !req.body) {
