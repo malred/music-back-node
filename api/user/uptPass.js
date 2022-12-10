@@ -1,4 +1,4 @@
-import db from "../db/db";
+import db from "../../db/db";
 // 修改密码
 export default async function uptPass(req, res) {
   if (null !== req && undefined !== req) {
