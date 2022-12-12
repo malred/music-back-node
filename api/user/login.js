@@ -3,7 +3,7 @@ import db from "../../db/db";
 export default async function login(request, response) {
   if (null !== request && undefined !== request) {
     // 从路由中获取参数(uname,upass)
-    const { uname, upass } = request.query;
+    const { uname, upass } = request.body;
     const [rows] = await db.query(
       `select * from muser where uname='${uname}' and upass='${upass}'`
     );
