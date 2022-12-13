@@ -2,7 +2,7 @@ import db from "../../db/db";
 // 登录
 export default async function login(request, response) {
     if (!request || !request.body) {
-        return res.send({
+        return response.send({
             status: 400,
             msg: "请求参数错误",
         });
