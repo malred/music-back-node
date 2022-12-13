@@ -4,7 +4,7 @@ export default async function login(request, response) {
   if (null !== request && undefined !== request) {
     // 从路由中获取参数(uname,upass)
     const { uname, upass } = request.body;
-    const [rows] = await db.query(
+    const rows = await db.query(
       `select * from muser where uname='${uname}' and upass='${upass}'`
     );
     if (rows[0].length !== 0 && rows[0] !== undefined) {
