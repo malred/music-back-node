@@ -3,7 +3,7 @@ const db = require('../../utils/db')
 // import R from '../../utils/res'
 const R = require('../../utils/res')
 /** 数据库查询,登录 */
-export default function getUserByUnameAndUpass(uname, upass, res) {
+export function getUserByUnameAndUpass(uname, upass, res) {
     try {
         return db.query(`select *
              from music.muser
