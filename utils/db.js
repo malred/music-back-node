@@ -8,7 +8,7 @@ var pool = mysql.createPool({
   database: "music",
   user: "root",
   password: "nFNWD8a7KSaLLbDaN2uO",
-  // password: "q2k0f0n3",
+  // password: "123456",
   // select返回的从数组对象改为数组
   rowsAsArray: true,
   //强制日期类型(TIMESTAMP, DATETIME, DATE)以字符串返回，

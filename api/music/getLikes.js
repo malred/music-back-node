@@ -1,4 +1,5 @@
-import db from "../../db/db";
+import db from "../../utils/db";
+import R from '../../utils/res'
 // 获取喜欢的歌曲列表(根据uid)
 export async function getMuserLikesByUid(uid, res) {
     try {

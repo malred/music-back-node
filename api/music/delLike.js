@@ -1,4 +1,5 @@
-import db from "../../db/db"
+import db from "../../utils/db";
+import R from '../../utils/res'
 // 根据uid和mid从我喜欢的音乐里移除
 export async function deleteByUidAndMid(uid, mid, res) {
     try {
