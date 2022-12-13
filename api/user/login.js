@@ -1,7 +1,12 @@
 import db from "../../db/db";
 // 登录
 export default async function login(request, response) {
-  if (null !== request && undefined !== request) {
+    if (!req || !req.body) {
+        return res.send({
+            status: 400,
+            msg: "请求参数错误",
+        });
+    } 
     // 从路由中获取参数(uname,upass)
     const { uname, upass } = request.body;
     const rows = await db.query(
@@ -19,5 +24,5 @@ export default async function login(request, response) {
         msg: "登录失败", //状态描述
       });
     }
-  }
+  
 }
