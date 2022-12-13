@@ -5,7 +5,7 @@ export default async function login(request, response) {
     // 从路由中获取参数(uname,upass)
     const { uname, upass } = request.body;
     const rows = await db.query(
-      `select * from muser where uname='${uname}' and upass='${upass}'`
+      `select * from music.muser where uname='${uname}' and upass='${upass}'`
     );
     if (rows[0].length !== 0 && rows[0] !== undefined) {
       // response.status(200).send({
@@ -15,7 +15,7 @@ export default async function login(request, response) {
       });
     } else {
       return response.send({
-        status: 200,
+        status: 500,
         msg: "登录失败", //状态描述
       });
     }
