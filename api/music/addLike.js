@@ -1,5 +1,7 @@
-import db from "../../utils/db";
-import R from '../../utils/res'
+// import db from "../../utils/db";
+const db = require('../../utils/db')
+// import R from '../../utils/res'
+const R = require('../../utils/res')
 // 根据id获取喜欢的歌曲
 export async function getUserLikeById(id, res) {
     try {

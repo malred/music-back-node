@@ -1,3 +1,4 @@
+// 在本地要用import,在浏览器用require
 // import db from "../../utils/db";
 const db = require('../../utils/db')
 // import R from '../../utils/res'
@@ -26,8 +27,8 @@ export default async function login(req, res) {
         if (rows[0].length !== 0 && rows[0] !== undefined) {
             return R.OK('登录成功', res)
         }
-        return R.ERR('账号或密码错误',res)
+        return R.ERR('账号或密码错误', res)
     } catch {
-        return R.ERR('登录失败',res)
+        return R.ERR('登录失败', res)
     }
 }

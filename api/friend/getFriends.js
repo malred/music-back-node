@@ -1,5 +1,7 @@
-import db from "../../utils/db";
-import R from '../../utils/res'
+// import db from "../../utils/db";
+const db = require('../../utils/db')
+// import R from '../../utils/res'
+const R = require('../../utils/res')
 import { toUserInfo } from "../user/info";
 import { column } from "./addFriend";
 

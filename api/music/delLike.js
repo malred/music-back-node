@@ -1,5 +1,7 @@
-import db from "../../utils/db";
-import R from '../../utils/res'
+// import db from "../../utils/db";
+const db = require('../../utils/db')
+// import R from '../../utils/res'
+const R = require('../../utils/res')
 // 根据uid和mid从我喜欢的音乐里移除
 export async function deleteByUidAndMid(uid, mid, res) {
     try {

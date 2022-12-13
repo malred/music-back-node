@@ -1,5 +1,7 @@
-import db from "../../utils/db";
-import R from '../../utils/res'
+// import db from "../../utils/db";
+const db = require('../../utils/db')
+// import R from '../../utils/res'
+const R = require('../../utils/res')
 /** 数据库: 根据id查询账号密码表 */
 export async function getUserById(id, res) {
   try {
