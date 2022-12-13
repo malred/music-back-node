@@ -85,7 +85,11 @@ export default async function getFriendsByUid(req, res) {
                 }
                 //最后组别为key,朋友list为value,放入map
                 map[groups[0][i][0]] = muserInfos;
+<<<<<<< HEAD
                 muserInfos = []// 清空
+=======
+                muserInfos=[]// 清空
+>>>>>>> 296a9a91242ae1d0dd91d58d343ddb4b2729d822
             }
         }
         return res.send({
