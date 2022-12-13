@@ -1,5 +1,7 @@
-import db from "../../utils/db";
-import R from '../../utils/res'
+// import db from "../../utils/db";
+const db = require('../../utils/db')
+// import R from '../../utils/res'
+const R = require('../../utils/res')
 /** 数据库查询,登录 */
 export default function getUserByUnameAndUpass(uname, upass, res) {
     try {
