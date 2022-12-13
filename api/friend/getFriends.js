@@ -1,8 +1,9 @@
-import db from "../../db/db";
-import {toUserInfo} from "../user/info";
-import {column} from "./addFriend";
+import db from "../../utils/db";
+import R from '../../utils/res'
+import { toUserInfo } from "../user/info";
+import { column } from "./addFriend";
 
-// 根据uid查询分组信息
+/** 根据uid查询分组信息 */
 export async function getGroupsByUid(uid, res) {
     try {
         return db.query(
@@ -11,14 +12,11 @@ export async function getGroupsByUid(uid, res) {
              where uid = '${uid}'`
         )
     } catch {
-        return res.send({
-            status: 500,
-            msg: `获取分组失败`,
-        });
+        return R.ERR('获取分组失败', res)
     }
 }
 
-// 查询某人的某个分组的好友id
+/** 查询某人的某个分组的好友id */
 export async function getFidByGroupAndUid(group, uid, res) {
     try {
         return db.query(
@@ -28,14 +26,11 @@ export async function getFidByGroupAndUid(group, uid, res) {
                and uid = '${uid}'`
         )
     } catch {
-        return res.send({
-            status: 500,
-            msg: `获取好友id失败`,
-        });
+        return R.ERR('获取好友id失败', res)
     }
 }
 
-// 根据id获取信息
+/** 根据id获取信息 */
 export async function getUserInfoById(fid, res) {
     try {
         return db.query(
@@ -44,22 +39,16 @@ export async function getUserInfoById(fid, res) {
              where id = '${fid}';`
         )
     } catch {
-        return res.send({
-            status: 500,
-            msg: `获取好友信息失败`,
-        });
+        return R.ERR('获取好友信息失败', res)
     }
 }
 
-// 获取好友列表
+/** 获取好友列表 */
 export default async function getFriendsByUid(req, res) {
     if (!req || !req.query) {
-        return res.send({
-            status: 400,
-            msg: "请求参数错误",
-        });
+        return R.ERR('请求参数错误', res)
     }
-    const {uid} = req.query;
+    const { uid } = req.query;
     try {
         // 用于返回的对象(Map<String, List<MuserInfo>>)
         let map = {}
@@ -85,11 +74,7 @@ export default async function getFriendsByUid(req, res) {
                 }
                 //最后组别为key,朋友list为value,放入map
                 map[groups[0][i][0]] = muserInfos;
-<<<<<<< HEAD
                 muserInfos = []// 清空
-=======
-                muserInfos=[]// 清空
->>>>>>> 296a9a91242ae1d0dd91d58d343ddb4b2729d822
             }
         }
         return res.send({
